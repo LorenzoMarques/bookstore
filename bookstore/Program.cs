@@ -1,16 +1,40 @@
+using bookstore.Data;
+using bookstore.Filters;
+using bookstore.Repositories;
+using bookstore.Services;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using DotNetEnv;
+
+var environmentFilePath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+
+Env.Load(environmentFilePath);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("A connection string was not configured correctly.");
+}
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<UsersService>();
+builder.Services.AddScoped<UsersRepository>();
+
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+});
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
