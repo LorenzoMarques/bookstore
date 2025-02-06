@@ -17,6 +17,7 @@ namespace bookstore.Models
         public string email { get; set; } = string.Empty;
 
         [Required]
+        [MinLength(6)]
         public string password { get; set; } = string.Empty;
 
         public bool active { get; set; } = true;
