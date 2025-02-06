@@ -1,5 +1,7 @@
 ﻿using bookstore.Data;
+using bookstore.Dtos.User;
 using bookstore.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace bookstore.Repositories
@@ -23,5 +25,40 @@ namespace bookstore.Repositories
             return user;
       
         }
+        public User? GetUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(user => user.email == email);
+        }
+
+        public User CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+        public User UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+         public async Task<bool> DeleteUserById(int id)
+        {
+            User? user = _context.Users.Find(id);
+
+            if(user is null) 
+            {
+                return false;
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+
+            return true;
+        }
+
     }
 }
