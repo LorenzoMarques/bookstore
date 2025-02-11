@@ -1,4 +1,5 @@
-﻿using bookstore.Dtos.User;
+﻿using AutoMapper;
+using bookstore.Dtos.User;
 using bookstore.Exceptions;
 using bookstore.Models;
 using bookstore.Repositories;
@@ -9,20 +10,26 @@ namespace bookstore.Services
     public class UsersService
     {
         private readonly UsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-
-
-        public UsersService(UsersRepository usersRepository)
+        public UsersService(UsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
+
         }
 
-        public List<User> GetUsers()
+        public List<UserDto> GetUsers()
         {
-            return _usersRepository.GetUsers();
+            List<User> users = _usersRepository.GetUsers();
+
+            List<UserDto> usersDto = _mapper.Map<List<UserDto>>(users);
+
+
+            return usersDto;
         }
 
-        public User GetUserById(int id)
+        public UserDto GetUserById(int id)
         {
             User? user = _usersRepository.GetUserById(id);
             if (user is null)
@@ -30,12 +37,14 @@ namespace bookstore.Services
                 throw HttpException.NotFound("User not found");
             }
 
-            return user;
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            return userDto;
         }
 
-        public User CreateUser(CreateUserDto userDto) 
+        public UserDto CreateUser(CreateUserDto createUserDto) 
         {
-            User? findUser = _usersRepository.GetUserByEmail(userDto.email);
+            User? findUser = _usersRepository.GetUserByEmail(createUserDto.email);
 
             if(findUser is not null)
             {
@@ -43,9 +52,9 @@ namespace bookstore.Services
             }
 
             User user = new User{
-                name = userDto.name,
-                email = userDto.email,
-                password = HashPassword(userDto.password),
+                name = createUserDto.name,
+                email = createUserDto.email,
+                password = HashPassword(createUserDto.password),
                 active = true,
                 vip = false,
                 created_at = DateTime.UtcNow,
@@ -53,11 +62,14 @@ namespace bookstore.Services
             }; 
             User newUser = _usersRepository.CreateUser(user);
 
-            return newUser;
+            UserDto userDto = _mapper.Map<UserDto>(newUser);
+
+
+            return userDto;
 
         }
 
-        public User UpdateUser(UpdateUserDto userDto, int userId)
+        public UserDto UpdateUser(UpdateUserDto updateUserDto, int userId)
         {
 
             User? findUser = _usersRepository.GetUserById(userId);
@@ -66,11 +78,17 @@ namespace bookstore.Services
                 throw HttpException.NotFound("User not found");
             }
 
-            findUser = UpdateUserFields(findUser, userDto);
+            findUser = UpdateUserFields(findUser, updateUserDto);
 
-            Console.WriteLine(findUser.name);
+
             findUser.updated_at = DateTime.UtcNow;
-            return _usersRepository.UpdateUser(findUser);
+
+            User updatedUser = _usersRepository.UpdateUser(findUser);
+
+            UserDto userDto = _mapper.Map<UserDto>(updatedUser);
+
+
+            return userDto;
         }
 
         public async Task<bool> DeleteUser(int userId)
@@ -90,10 +108,6 @@ namespace bookstore.Services
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        private bool VerifyPassword(string password, string hashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-        }
 
         private User UpdateUserFields(User user, UpdateUserDto updateUserDto)
         {

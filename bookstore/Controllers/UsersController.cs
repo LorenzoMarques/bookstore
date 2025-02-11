@@ -18,14 +18,14 @@ namespace bookstore.Controllers
         [HttpGet] 
         public IActionResult GetUser()
         {
-            List<User> users = _usersService.GetUsers();
+            List<UserDto> users = _usersService.GetUsers();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
-            User user = _usersService.GetUserById(id);
+            UserDto user = _usersService.GetUserById(id);
             return Ok(user);
         }
 
@@ -33,14 +33,14 @@ namespace bookstore.Controllers
         public IActionResult CreateUser([FromBody] CreateUserDto userDto)
         {
 
-            User user = _usersService.CreateUser(userDto);
+            UserDto user = _usersService.CreateUser(userDto);
             return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
         }
 
         [HttpPatch("{id}")]
         public IActionResult UpdateUser([FromBody] UpdateUserDto userDto, int id) 
-        { 
-            User user = _usersService.UpdateUser(userDto, id);
+        {
+            UserDto user = _usersService.UpdateUser(userDto, id);
 
             return Ok(user);
         }
