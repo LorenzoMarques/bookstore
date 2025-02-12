@@ -48,6 +48,7 @@ dotnet build
 # Run the application
 dotnet run
 ```
+---
 
 ### 🐞 3. Running in Debug Mode
 
@@ -56,6 +57,7 @@ To run the application in debug mode, use:
 ```sh
 dotnet run --configuration Debug
 ```
+---
 
 ### ✅ 4. Documentation
 
