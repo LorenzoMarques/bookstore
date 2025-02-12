@@ -21,11 +21,11 @@ namespace bookstore.Services
 
         public LoginResponseDto Login(LoginDto loginDto)
         {
-            User? user = _usersRepository.GetUserByEmail(loginDto.email);
+            User? user = _usersRepository.GetUserByEmail(loginDto.Email);
             if (user is null) {
                 throw HttpException.NotFound("User not found");
             }
-            if(VerifyPassword(loginDto.password, user.password) is false)
+            if(VerifyPassword(loginDto.Password, user.Password) is false)
             {
                 throw HttpException.BadRequest("Invalid credentials");
             }
@@ -36,8 +36,8 @@ namespace bookstore.Services
 
             return new LoginResponseDto
             {
-                token = token,
-                user = userDto
+                Token = token,
+                User = userDto
             };
         }
 

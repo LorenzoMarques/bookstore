@@ -7,24 +7,35 @@ namespace bookstore.Models
     public class User
     {
         [Key]
-        public int id { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
 
         [Required]
-        public string name { get; set; } = string.Empty;
+        [Column("name")]
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]
-        public string email { get; set; } = string.Empty;
+        [Column("email")]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [MinLength(6)]
-        public string password { get; set; } = string.Empty;
+        [Column("password")]
+        public string Password { get; set; } = string.Empty;
 
-        public bool active { get; set; } = true;
-        public bool vip { get; set; } = false;
-        public DateTime? subscription_date { get; set; }
-        public DateTime? subscription_expires_at { get; set; }
-        public DateTime created_at { get; set; } = DateTime.UtcNow;
-        public DateTime updated_at { get; set; } = DateTime.UtcNow;
+        [Column("active")]
+        public bool Active { get; set; } = true;
+        [Column("vip")]
+        public bool Vip { get; set; } = false;
+        [Column("subscription_date")]
+        public DateTime? SubscriptionDate { get; set; }
+
+        [Column("subscription_expires_at")]
+        public DateTime? SubscriptionExpiresAt { get; set; }
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

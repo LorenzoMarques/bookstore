@@ -2,7 +2,7 @@
 
 public class NotEmptyAttribute : ValidationAttribute
 {
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is string str && string.IsNullOrWhiteSpace(str))
         {
@@ -11,5 +11,6 @@ public class NotEmptyAttribute : ValidationAttribute
 
 
         return ValidationResult.Success;
+
     }
 }
