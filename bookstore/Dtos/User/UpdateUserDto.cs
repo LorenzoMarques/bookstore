@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bookstore.Dtos.User
 {
     public class UpdateUserDto
     {
         [NotEmpty]
-        [MinLength(1)]
-        public string? name { get; set; }   
+        public string? Name { get; set; }
 
         [NotEmpty]
         [EmailAddress]
-        public string? email { get; set; }
+        public string? Email { get; set; }
 
         [NotEmpty]
         [StringLength(30, MinimumLength = 6, ErrorMessage = "The field must be between 6 and 30 characters long.")]
-        public string? password { get; set; }
+        public string? Password { get; set; }
     }
 }

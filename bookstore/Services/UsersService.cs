@@ -44,7 +44,7 @@ namespace bookstore.Services
 
         public UserDto CreateUser(CreateUserDto createUserDto) 
         {
-            User? findUser = _usersRepository.GetUserByEmail(createUserDto.email);
+            User? findUser = _usersRepository.GetUserByEmail(createUserDto.Email);
 
             if(findUser is not null)
             {
@@ -52,13 +52,13 @@ namespace bookstore.Services
             }
 
             User user = new User{
-                name = createUserDto.name,
-                email = createUserDto.email,
-                password = HashPassword(createUserDto.password),
-                active = true,
-                vip = false,
-                created_at = DateTime.UtcNow,
-                updated_at = DateTime.UtcNow,
+                Name = createUserDto.Name,
+                Email = createUserDto.Email,
+                Password = HashPassword(createUserDto.Password),
+                Active = true,
+                Vip = false,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             }; 
             User newUser = _usersRepository.CreateUser(user);
 
@@ -81,7 +81,7 @@ namespace bookstore.Services
             findUser = UpdateUserFields(findUser, updateUserDto);
 
 
-            findUser.updated_at = DateTime.UtcNow;
+            findUser.UpdatedAt = DateTime.UtcNow;
 
             User updatedUser = _usersRepository.UpdateUser(findUser);
 
@@ -111,9 +111,9 @@ namespace bookstore.Services
 
         private User UpdateUserFields(User user, UpdateUserDto updateUserDto)
         {
-            if (!string.IsNullOrEmpty(updateUserDto.name)) user.name = updateUserDto.name;
-            if (!string.IsNullOrEmpty(updateUserDto.email)) user.email = updateUserDto.email;
-            if (!string.IsNullOrEmpty(updateUserDto.password)) user.password = updateUserDto.password; 
+            if (!string.IsNullOrEmpty(updateUserDto.Name)) user.Name = updateUserDto.Name;
+            if (!string.IsNullOrEmpty(updateUserDto.Email)) user.Email = updateUserDto.Email;
+            if (!string.IsNullOrEmpty(updateUserDto.Password)) user.Password = updateUserDto.Password; 
 
             return user;
         }

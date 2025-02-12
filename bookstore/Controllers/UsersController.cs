@@ -34,7 +34,7 @@ namespace bookstore.Controllers
         {
 
             UserDto user = _usersService.CreateUser(userDto);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         [HttpPatch("{id}")]
