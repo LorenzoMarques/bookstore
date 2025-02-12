@@ -66,6 +66,7 @@ The documentation is available at:
 ```sh
 https://url/scalar
 ```
+---
 
 ### 📜 License
 
