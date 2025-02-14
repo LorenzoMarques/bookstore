@@ -2,6 +2,7 @@
 using bookstore.Services;
 using bookstore.Models;
 using bookstore.Dtos.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace bookstore.Controllers
 {
@@ -15,7 +16,8 @@ namespace bookstore.Controllers
         {
             _usersService = usersService;
         }
-        [HttpGet] 
+        [HttpGet]
+        [Authorize]
         public IActionResult GetUser()
         {
             List<UserDto> users = _usersService.GetUsers();
