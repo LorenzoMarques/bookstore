@@ -12,7 +12,7 @@ using bookstore.Data;
 namespace bookstore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250212191037_BookstoreMigration")]
+    [Migration("20250214155152_BookstoreMigration")]
     partial class BookstoreMigration
     {
         /// <inheritdoc />
@@ -134,6 +134,25 @@ namespace bookstore.Migrations
                     b.ToTable("categories");
                 });
 
+            modelBuilder.Entity("bookstore.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("roles");
+                });
+
             modelBuilder.Entity("bookstore.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -166,6 +185,10 @@ namespace bookstore.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
+
                     b.Property<DateTime?>("SubscriptionDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("subscription_date");
@@ -178,11 +201,9 @@ namespace bookstore.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<bool>("Vip")
-                        .HasColumnType("boolean")
-                        .HasColumnName("vip");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("users");
                 });
@@ -206,6 +227,17 @@ namespace bookstore.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("bookstore.Models.User", b =>
+                {
+                    b.HasOne("bookstore.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("bookstore.Models.Book", b =>
                 {
                     b.Navigation("BookCategories");
@@ -214,6 +246,11 @@ namespace bookstore.Migrations
             modelBuilder.Entity("bookstore.Models.Category", b =>
                 {
                     b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("bookstore.Models.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

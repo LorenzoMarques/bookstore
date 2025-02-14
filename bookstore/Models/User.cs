@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bookstore.Models
 {
-    [Table("users")] 
+    [Table("users")]
     public class User
     {
         [Key]
@@ -26,15 +26,22 @@ namespace bookstore.Models
 
         [Column("active")]
         public bool Active { get; set; } = true;
-        [Column("vip")]
-        public bool Vip { get; set; } = false;
+
+        [Column("role_id")]
+        public int RoleId { get; set; }
+
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; } = new Role();
+
         [Column("subscription_date")]
         public DateTime? SubscriptionDate { get; set; }
 
         [Column("subscription_expires_at")]
         public DateTime? SubscriptionExpiresAt { get; set; }
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
