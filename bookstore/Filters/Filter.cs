@@ -25,6 +25,7 @@ namespace bookstore.Filters
             else
             {
                 var response = new { message = "Unexpected error" };
+                Console.WriteLine(context.Exception);
                 context.Result = new ObjectResult(response)
                 {
                     StatusCode = (int)HttpStatusCode.InternalServerError

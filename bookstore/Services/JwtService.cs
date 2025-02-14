@@ -20,7 +20,9 @@ namespace bookstore.Services
 
             ci.AddClaim(new Claim("email", user.Email));
             ci.AddClaim(new Claim("active", user.Active.ToString().ToLower()));
-            ci.AddClaim(new Claim("vip", user.Vip.ToString().ToLower()));
+            ci.AddClaim(new Claim("role", user.Role.Name));
+            ci.AddClaim(new Claim("id", user.Id.ToString()));
+
 
 
             var tokenDescriptor = new SecurityTokenDescriptor

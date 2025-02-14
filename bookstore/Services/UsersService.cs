@@ -10,11 +10,13 @@ namespace bookstore.Services
     public class UsersService
     {
         private readonly UsersRepository _usersRepository;
+        private readonly RolesRepository _rolesRepository;
         private readonly IMapper _mapper;
 
-        public UsersService(UsersRepository usersRepository, IMapper mapper)
+        public UsersService(UsersRepository usersRepository, IMapper mapper, RolesRepository rolesRepository)
         {
             _usersRepository = usersRepository;
+            _rolesRepository = rolesRepository;
             _mapper = mapper;
 
         }
@@ -29,7 +31,7 @@ namespace bookstore.Services
             return usersDto;
         }
 
-        public UserDto GetUserById(int id)
+        public UserDto GetUseById(int id)
         {
             User? user = _usersRepository.GetUserById(id);
             if (user is null)
@@ -51,12 +53,19 @@ namespace bookstore.Services
                 throw HttpException.BadRequest("User already exists");
             }
 
+            Role? findRole = _rolesRepository.GetRoleByName("User");
+
+            if (findRole is null)
+            {
+                throw HttpException.NotFound("Role not found");
+            }
+
             User user = new User{
                 Name = createUserDto.Name,
                 Email = createUserDto.Email,
                 Password = HashPassword(createUserDto.Password),
                 Active = true,
-                Vip = false,
+                Role = findRole,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
             }; 

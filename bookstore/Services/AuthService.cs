@@ -4,6 +4,7 @@ using bookstore.Dtos.User;
 using bookstore.Exceptions;
 using bookstore.Models;
 using bookstore.Repositories;
+using System.Text.Json;
 
 namespace bookstore.Services
 {
@@ -25,7 +26,13 @@ namespace bookstore.Services
             if (user is null) {
                 throw HttpException.NotFound("User not found");
             }
-            if(VerifyPassword(loginDto.Password, user.Password) is false)
+
+            Console.WriteLine(JsonSerializer.Serialize(user, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            }));
+            
+            if (VerifyPassword(loginDto.Password, user.Password) is false)
             {
                 throw HttpException.BadRequest("Invalid credentials");
             }

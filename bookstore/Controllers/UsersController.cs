@@ -17,7 +17,7 @@ namespace bookstore.Controllers
             _usersService = usersService;
         }
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles="Admin")]
         public IActionResult GetUser()
         {
             List<UserDto> users = _usersService.GetUsers();
@@ -25,9 +25,10 @@ namespace bookstore.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetUserById(int id)
         {
-            UserDto user = _usersService.GetUserById(id);
+            UserDto user = _usersService.GetUseById(id);
             return Ok(user);
         }
 
@@ -40,6 +41,7 @@ namespace bookstore.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize]
         public IActionResult UpdateUser([FromBody] UpdateUserDto userDto, int id) 
         {
             UserDto user = _usersService.UpdateUser(userDto, id);
@@ -48,6 +50,7 @@ namespace bookstore.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteUserById(int id) 
         {
             await _usersService.DeleteUser(id);

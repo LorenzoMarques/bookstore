@@ -49,24 +49,16 @@ namespace bookstore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "roles",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    email = table.Column<string>(type: "text", nullable: false),
-                    password = table.Column<string>(type: "text", nullable: false),
-                    active = table.Column<bool>(type: "boolean", nullable: false),
-                    vip = table.Column<bool>(type: "boolean", nullable: false),
-                    subscription_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    subscription_expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    name = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.id);
+                    table.PrimaryKey("PK_roles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,6 +87,33 @@ namespace bookstore.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
+                    active = table.Column<bool>(type: "boolean", nullable: false),
+                    role_id = table.Column<int>(type: "integer", nullable: false),
+                    subscription_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    subscription_expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_users_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_book_categories_book_id",
                 table: "book_categories",
@@ -104,6 +123,11 @@ namespace bookstore.Migrations
                 name: "IX_book_categories_category_id",
                 table: "book_categories",
                 column: "category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_role_id",
+                table: "users",
+                column: "role_id");
         }
 
         /// <inheritdoc />
@@ -120,6 +144,9 @@ namespace bookstore.Migrations
 
             migrationBuilder.DropTable(
                 name: "categories");
+
+            migrationBuilder.DropTable(
+                name: "roles");
         }
     }
 }

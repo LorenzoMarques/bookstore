@@ -27,7 +27,7 @@ namespace bookstore.Repositories
         }
         public User? GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(user => user.Email == email);
+            return _context.Users.Include(user => user.Role).FirstOrDefault(user => user.Email == email);
         }
 
         public User CreateUser(User user)
