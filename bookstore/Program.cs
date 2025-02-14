@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using DotNetEnv;
 using bookstore.Mappings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using bookstore;
 
 var environmentFilePath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
 
@@ -29,8 +33,40 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddAutoMapper(typeof(UserProfile));
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    Console.WriteLine(Configuration.PrivateJwtKey);
+    Console.WriteLine(Configuration.Audience);
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.ASCII.GetBytes(Configuration.PrivateJwtKey) 
+        ),
 
+        ValidateLifetime = true,
 
+        ClockSkew = TimeSpan.Zero
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"Invalid token: {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+    };
+});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers(options =>
 {
@@ -54,6 +90,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
