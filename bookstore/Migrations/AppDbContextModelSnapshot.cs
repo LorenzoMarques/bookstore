@@ -54,8 +54,8 @@ namespace bookstore.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("isbn");
 
-                    b.Property<DateTime?>("PublishedDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly>("PublishedDate")
+                        .HasColumnType("date")
                         .HasColumnName("published_date");
 
                     b.Property<string>("Publisher")

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace bookstore.Models
 {
@@ -17,6 +18,7 @@ namespace bookstore.Models
         public int CategoryId { get; set; }
 
         [ForeignKey("BookId")]
+        [JsonIgnore]
         public Book Book { get; set; } = new Book();
 
         [ForeignKey("CategoryId")]

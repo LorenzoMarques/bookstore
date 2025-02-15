@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace bookstore.Models
 {
@@ -13,7 +14,7 @@ namespace bookstore.Models
         [Required]
         [Column("name")]
         public string Name { get; set; } = string.Empty;
-
+        [JsonIgnore]
         public ICollection<BookCategory> BookCategories { get; set; } = new List<BookCategory>();
     }
 }
