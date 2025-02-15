@@ -12,7 +12,7 @@ using bookstore.Data;
 namespace bookstore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250214155152_BookstoreMigration")]
+    [Migration("20250215200217_BookstoreMigration")]
     partial class BookstoreMigration
     {
         /// <inheritdoc />
@@ -57,8 +57,8 @@ namespace bookstore.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("isbn");
 
-                    b.Property<DateTime?>("PublishedDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly>("PublishedDate")
+                        .HasColumnType("date")
                         .HasColumnName("published_date");
 
                     b.Property<string>("Publisher")

@@ -18,6 +18,7 @@ public static class DependencyInjectionConfig
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<UsersService>();
+        services.AddScoped<BooksService>();
         return services;
     }
 
@@ -25,6 +26,9 @@ public static class DependencyInjectionConfig
     {
         services.AddScoped<UsersRepository>();
         services.AddScoped<RolesRepository>();
+        services.AddScoped<BooksRepository>();
+        services.AddScoped<CategoryRepository>();
+        services.AddScoped<BookCategoriesRepository>();
         return services;
     }
 
@@ -38,8 +42,8 @@ public static class DependencyInjectionConfig
     private static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(UserProfile));
+        services.AddAutoMapper(typeof(BookProfile));
         return services;
-
     }
 
 }

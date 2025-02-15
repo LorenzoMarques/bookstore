@@ -5,6 +5,7 @@ using bookstore.Models;
 using bookstore.Repositories;
 
 
+
 namespace bookstore.Services
 {
     public class UsersService
@@ -24,10 +25,7 @@ namespace bookstore.Services
         public List<UserDto> GetUsers()
         {
             List<User> users = _usersRepository.GetUsers();
-
             List<UserDto> usersDto = _mapper.Map<List<UserDto>>(users);
-
-
             return usersDto;
         }
 

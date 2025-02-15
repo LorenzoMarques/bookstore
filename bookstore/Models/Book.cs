@@ -25,7 +25,7 @@ namespace bookstore.Models
         public string Publisher { get; set; } = string.Empty;
 
         [Column("published_date")]
-        public DateTime? PublishedDate { get; set; }
+        public DateOnly PublishedDate { get; set; }
 
         [Column("isbn")]
         public long Isbn { get; set; }

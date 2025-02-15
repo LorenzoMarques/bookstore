@@ -8,13 +8,11 @@ namespace bookstore.Controllers
     [Route("api/auth")]
     public class AuthController : Controller
     {
-        private readonly JwtService _jwtService;
         private readonly AuthService _authService;
 
 
-        public AuthController(JwtService jwtService, AuthService authService)
+        public AuthController(AuthService authService)
         {
-            _jwtService = jwtService;
             _authService = authService;
 
         }
@@ -23,6 +21,7 @@ namespace bookstore.Controllers
         public IActionResult Login([FromBody] LoginDto loginDto)
         {
             LoginResponseDto loginResponse = _authService.Login(loginDto) ;
+
             return Ok(loginResponse);
         }
     }

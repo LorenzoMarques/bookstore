@@ -22,7 +22,7 @@ namespace bookstore.Migrations
                     description = table.Column<string>(type: "text", nullable: false),
                     author = table.Column<string>(type: "text", nullable: false),
                     publisher = table.Column<string>(type: "text", nullable: false),
-                    published_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    published_date = table.Column<DateOnly>(type: "date", nullable: false),
                     isbn = table.Column<long>(type: "bigint", nullable: false),
                     cover_image_url = table.Column<string>(type: "text", nullable: false),
                     url_pdf = table.Column<string>(type: "text", nullable: false),
