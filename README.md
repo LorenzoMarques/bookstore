@@ -68,8 +68,4 @@ https://url/scalar
 ```
 ---
 
-### 📜 License
-
-This project is open-source and can be freely modified.
-
 💻 Developed by Lorenzo Marques
